@@ -138,6 +138,43 @@
     #introScreen>*:nth-child(5){animation-delay:.4s;}
     .notice{font-size:.72rem;color:var(--muted);margin-top:12px;line-height:1.6;max-width:400px;}
     .notice strong{color:var(--text);}
+    
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav-menu { display: none; }
+      .nav-cta { padding: 0.4rem 1rem; font-size: 0.75rem; }
+      
+      .hero, .page-hero, .sec, .hiw, .families, .picks, .quiz-cta, .result-hero, .perfumes, .other-types, .screen { 
+        padding: 60px 24px !important; 
+      }
+    
+      .hero, .result-hero, .page-hero, .quiz-cta, .sim-wrapper, .families-grid.musky { 
+        grid-template-columns: 1fr !important; 
+        gap: 32px; 
+        text-align: center; 
+      }
+      
+      .families-grid, .picks-grid, .note-grid, .types-grid, .perfumes-grid, .mbti-grid, .trait-grid, .mode-cards, .steps { 
+        grid-template-columns: 1fr !important; 
+      }
+      
+      .hero-title, .ph-title, .rh-title, .intro-title, .mode-title, .qc-title, .sec-title { 
+        font-size: 2.2rem !important; 
+      }
+        
+      .hero-actions, .hero-meta, .rh-actions, .stats-row, .intro-meta { 
+        justify-content: center; 
+        flex-wrap: wrap; 
+      }
+      .sec-kicker, .sec-title, .sec-sub, .rh-tags {
+        justify-content: center;
+        text-align: center;
+      }
+      .sec-sub { margin-left: auto; margin-right: auto; }
+    
+      .footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+    }
+    
   </style>
 </head>
 <body>
@@ -332,7 +369,7 @@ const MBTI_MAP = {
 };
 
 // ══════════════════════
-// 질문 데이터 (12문항, 4축×3)
+// 질문 데이터
 // ══════════════════════
 const questions = [
   // E/I 축
@@ -473,7 +510,7 @@ function renderQ(idx){
   document.getElementById('qScenario').textContent = q.scenario;
   document.getElementById('qText').textContent = q.text;
 
-  // 축 칩 업데이트
+  // 축 칩
   ['chip-EI','chip-NS','chip-TF','chip-JP'].forEach(id=>document.getElementById(id).className='axis-chip');
   const doneAxes = idx >= 3 ? ['chip-EI'] : [];
   if(idx >= 6) doneAxes.push('chip-NS');
@@ -575,13 +612,13 @@ function runLoading(mbtiOverride){
   }, 3000);
 }
 
-// MBTI → 향 계열 점수 (부드러운 분포)
+// MBTI → 향 계열 점수
 function getScentScores(mbti){
   const base = {floral:15, woody:15, citrus:15, oriental:15, musky:15};
   const map = MBTI_MAP[mbti];
   if(!map) return base;
   base[map.type] += 30;
-  // 보조 계열 추가
+  // 보조 계열
   const secondary = {
     INTJ:{woody:10,oriental:5},INTP:{musky:10,woody:5},
     ENTJ:{oriental:10,woody:5},ENTP:{citrus:10,floral:5},
