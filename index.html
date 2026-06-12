@@ -311,6 +311,42 @@
     .reveal-d1 { transition-delay:.1s; }
     .reveal-d2 { transition-delay:.2s; }
     .reveal-d3 { transition-delay:.3s; }
+    
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav-menu { display: none; }
+      .nav-cta { padding: 0.4rem 1rem; font-size: 0.75rem; }
+      
+      .hero, .page-hero, .sec, .hiw, .families, .picks, .quiz-cta, .result-hero, .perfumes, .other-types, .screen { 
+        padding: 60px 24px !important; 
+      }
+    
+      .hero, .result-hero, .page-hero, .quiz-cta, .sim-wrapper, .families-grid.musky { 
+        grid-template-columns: 1fr !important; 
+        gap: 32px; 
+        text-align: center; 
+      }
+      
+      .families-grid, .picks-grid, .note-grid, .types-grid, .perfumes-grid, .mbti-grid, .trait-grid, .mode-cards, .steps { 
+        grid-template-columns: 1fr !important; 
+      }
+      
+      .hero-title, .ph-title, .rh-title, .intro-title, .mode-title, .qc-title, .sec-title { 
+        font-size: 2.2rem !important; 
+      }
+        
+      .hero-actions, .hero-meta, .rh-actions, .stats-row, .intro-meta { 
+        justify-content: center; 
+        flex-wrap: wrap; 
+      }
+      .sec-kicker, .sec-title, .sec-sub, .rh-tags {
+        justify-content: center;
+        text-align: center;
+      }
+      .sec-sub { margin-left: auto; margin-right: auto; }
+    
+      .footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+    }
   </style>
 </head>
 <body>
@@ -769,8 +805,7 @@
   // ══════════════════════════════════════
   let mixedNotes = [];
   let mixedColors = [];
-
-  // 조합에 따른 실제 향수 매칭 데이터베이스 (총 10가지 모든 경우의 수 완비)
+  
   const PERFUME_DB = {
     // 1. 시트러스 + 플로럴 + 머스크
     'citrus,floral,musky': { name: 'Byredo - Blanche (바이레도 블랑쉬)', vibe: '갓 세탁한 셔츠처럼 깨끗하고 포근한 비누향' },
@@ -787,34 +822,30 @@
     // 5. 시트러스 + 오리엔탈 + 우디
     'citrus,oriental,woody': { name: 'Hermès - Terre d\'Hermès', vibe: '비 온 뒤 젖은 흙과 오렌지 껍질의 세련된 조화' },
 
-    // 6. 시트러스 + 플로럴 + 우디 (추가)
+    // 6. 시트러스 + 플로럴 + 우디
     'citrus,floral,woody': { name: 'Jo Malone - English Pear & Freesia', vibe: '신선한 배의 과즙과 우아한 프리지아, 그리고 깊은 우디의 조화' },
 
-    // 7. 시트러스 + 플로럴 + 오리엔탈 (추가)
+    // 7. 시트러스 + 플로럴 + 오리엔탈
     'citrus,floral,oriental': { name: 'Chanel - Coco Mademoiselle', vibe: '상큼한 오렌지와 관능적인 패출리가 섞인 세련되고 우아한 무드' },
 
-    // 8. 시트러스 + 머스크 + 오리엔탈 (추가)
+    // 8. 시트러스 + 머스크 + 오리엔탈
     'citrus,musky,oriental': { name: 'Byredo - Gypsy Water (바이레도 집시 워터)', vibe: '솔잎과 숲의 숨결에 달콤한 바닐라가 얹혀진 신비로운 향' },
 
-    // 9. 플로럴 + 머스크 + 오리엔탈 (추가)
+    // 9. 플로럴 + 머스크 + 오리엔탈
     'floral,musky,oriental': { name: 'Narciso Rodriguez - For Her', vibe: '우아한 장미와 묵직한 머스크가 만난 치명적이고 부드러운 향' },
 
-    // 10. 머스크 + 오리엔탈 + 우디 (추가)
+    // 10. 머스크 + 오리엔탈 + 우디
     'musky,oriental,woody': { name: 'Tom Ford - Oud Wood (톰포드 오드 우드)', vibe: '스모키한 나무 향과 이국적인 향신료가 어우러진 묵직한 카리스마' },
 
-    // 기본 폴백 (오류 방지용)
+    // (오류 방지용)
     'default': { name: 'Jo Malone - Wood Sage & Sea Salt', vibe: '바닷바람처럼 자유롭고 미네랄이 느껴지는 자연스러운 무드' }
   };
 
   function mixNote(type, color) {
     if (mixedNotes.length >= 3) return;
-
-    // 상태 업데이트
     mixedNotes.push(type);
     mixedColors.push(color);
     event.target.classList.add('selected');
-
-    // 오라(Aura) 시각화 업데이트 (색상 혼합 그라데이션)
     const aura = document.getElementById('scentAura');
     document.getElementById('auraText').textContent = `${mixedNotes.length} / 3 Notes`;
     
@@ -829,18 +860,13 @@
   }
 
   function showResult() {
-    // 선택되지 않은 버튼 비활성화
     document.querySelectorAll('.sm-chip:not(.selected)').forEach(chip => chip.classList.add('disabled'));
 
-    // 조합 키(Key) 생성 (알파벳 순 정렬하여 순서 상관없이 매칭되게 함)
     const mixKey = mixedNotes.sort().join(',');
     const match = PERFUME_DB[mixKey] || PERFUME_DB['default'];
-
-    // 결과 텍스트 바인딩
+    
     document.getElementById('resultVibe').innerHTML = `이 조합은 <strong>${match.vibe}</strong>을(를) 연상시킵니다.`;
     document.getElementById('matchPerfume').textContent = match.name;
-    
-    // 결과창 노출
     document.getElementById('smResult').style.display = 'block';
   }
 
