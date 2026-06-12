@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Scenetype — 나의 컬렉션</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"/>
+  <style>
+    :root{--bg:#fff;--surface:#f8f8f8;--card:#f2f2f2;--border:#e8e8e8;--text:#1a1a1a;--text2:#444;--muted:#888;--pink:#eb9bb4;--pink-light:#fff5f8;--pink-mid:#ffe4ef;--floral:#e8a0b8;--woody:#c4966a;--citrus:#d4be50;--oriental:#c47040;--musky:#9898b0;}
+    *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:'Pretendard',sans-serif;font-weight:400;min-height:100vh;}
+    a{text-decoration:none;color:inherit;}
+
+    /* NAV */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:200;background:#fff;border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;}
+    .nav-logo{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;color:var(--text);}
+    .nav-logo span{color:var(--pink);}
+    .nav-menu{display:flex;align-items:center;gap:32px;list-style:none;}
+    .nav-menu a{font-size:.85rem;font-weight:500;color:var(--muted);transition:color .18s;}
+    .nav-menu a:hover,.nav-menu a.active{color:var(--text);font-weight:700;}
+    .nav-cta{padding:.55rem 1.4rem;background:var(--pink);color:#fff;font-size:.82rem;font-weight:600;border-radius:6px;transition:opacity .18s;}
+    .nav-cta:hover{opacity:.88;}
+
+    /* PAGE HERO */
+    .page-hero{padding:100px 80px 48px;background:#fff;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;}
+    .ph-kicker{display:flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);margin-bottom:12px;}
+    .ph-kicker-dot{width:6px;height:6px;border-radius:50%;background:var(--pink);}
+    .ph-title{font-size:clamp(2rem,4vw,3.4rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;}
+    .ph-title .hl{color:var(--pink);}
+    .stats-row{display:flex;gap:32px;align-items:center;}
+    .stat-item{text-align:center;}
+    .stat-num{display:block;font-size:2.2rem;font-weight:800;color:var(--text);line-height:1;}
+    .stat-lbl{display:block;font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+    .stat-sep{width:1px;height:40px;background:var(--border);}
+
+    /* TOOLBAR */
+    .toolbar{padding:16px 80px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);}
+    .filter-group{display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;}
+    .filter-btn{font-size:.75rem;font-weight:600;padding:.55rem 1rem;background:transparent;border:none;border-right:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .18s;white-space:nowrap;}
+    .filter-btn:last-child{border-right:none;}
+    .filter-btn:hover{background:var(--pink-light);color:var(--pink);}
+    .filter-btn.active{background:var(--pink);color:#fff;}
+    .sort-select{font-size:.75rem;font-weight:600;padding:.55rem 2rem .55rem 1rem;background:#fff;border:1.5px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .7rem center;}
+    .spacer{flex:1;}
+    .btn-add{display:inline-flex;align-items:center;gap:6px;padding:.6rem 1.4rem;background:var(--pink);color:#fff;font-size:.8rem;font-weight:700;border-radius:8px;border:none;cursor:pointer;transition:all .2s;box-shadow:0 3px 12px rgba(235,155,180,.2);}
+    .btn-add:hover{opacity:.88;transform:translateY(-1px);}
+
+    /* MAIN */
+    .main-area{padding:40px 80px;min-height:60vh;}
+    .collection-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+
+    /* EMPTY */
+    .empty-state{display:none;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;background:var(--surface);border-radius:16px;}
+    .empty-state.show{display:flex;}
+    .empty-icon{font-size:3.5rem;margin-bottom:20px;opacity:.4;}
+    .empty-title{font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:6px;}
+    .empty-desc{font-size:.85rem;color:var(--muted);margin-bottom:24px;}
+    .btn-empty{display:inline-flex;align-items:center;gap:6px;padding:.78rem 1.8rem;background:var(--pink);color:#fff;font-size:.85rem;font-weight:700;border-radius:8px;border:none;cursor:pointer;transition:all .2s;}
+    .btn-empty:hover{opacity:.88;transform:translateY(-1px);}
+
+    /* COLLECTION CARD */
+    .col-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:22px;transition:all .22s;position:relative;overflow:hidden;}
+    .col-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.08);border-color:#d8d8d8;}
+    .col-card:hover .card-actions{opacity:1;}
+    .card-actions{position:absolute;top:14px;right:14px;display:flex;gap:6px;opacity:0;transition:opacity .18s;}
+    .card-act-btn{width:30px;height:30px;background:#fff;border:1.5px solid var(--border);border-radius:8px;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;}
+    .card-act-btn:hover{border-color:var(--text);color:var(--text);}
+    .card-act-btn.del:hover{border-color:var(--pink);color:var(--pink);}
+    .card-type-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+    .card-type-dot{width:8px;height:8px;border-radius:50%;}
+    .card-type-txt{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+    .card-brand{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+    .card-name{font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.2;}
+    .card-stars{display:flex;gap:2px;margin-bottom:10px;}
+    .star{font-size:.95rem;color:var(--border);}
+    .star.lit{color:#f5c542;}
+    .card-memo{font-size:.8rem;line-height:1.7;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;margin-top:10px;font-style:italic;}
+    .card-date{font-size:.62rem;color:var(--border);margin-top:10px;font-weight:500;}
+
+    /* MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.32);backdrop-filter:blur(4px);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .25s;}
+    .modal-overlay.open{opacity:1;pointer-events:all;}
+    .modal{background:#fff;border-radius:16px;width:100%;max-width:460px;padding:32px;transform:translateY(16px);transition:transform .25s;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.14);}
+    .modal-overlay.open .modal{transform:translateY(0);}
+    .modal-close{position:absolute;top:16px;right:16px;width:30px;height:30px;background:var(--surface);border:none;border-radius:8px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+    .modal-close:hover{background:var(--card);color:var(--text);}
+    .modal-title{font-size:1.3rem;font-weight:800;letter-spacing:-.02em;margin-bottom:24px;}
+    .field{margin-bottom:16px;}
+    .field-label{display:block;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+    .field input,.field select,.field textarea{width:100%;padding:.78rem 1rem;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Pretendard',sans-serif;font-size:.88rem;font-weight:400;outline:none;transition:border-color .18s;resize:none;}
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink);}
+    .field input::placeholder,.field textarea::placeholder{color:var(--muted);}
+    .field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;cursor:pointer;}
+    .field select option{background:#fff;}
+    .star-picker{display:flex;gap:6px;}
+    .star-pick{font-size:1.5rem;cursor:pointer;color:var(--border);transition:color .15s,transform .1s;user-select:none;}
+    .star-pick:hover,.star-pick.active{color:#f5c542;}
+    .star-pick:active{transform:scale(1.2);}
+    .modal-actions{display:flex;gap:8px;margin-top:24px;}
+    .btn-cancel{flex:1;padding:.82rem;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .18s;}
+    .btn-cancel:hover{border-color:var(--text);color:var(--text);}
+    .btn-save{flex:2;padding:.82rem;background:var(--pink);border:none;border-radius:8px;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;transition:opacity .18s;box-shadow:0 4px 14px rgba(235,155,180,.2);}
+    .btn-save:hover{opacity:.88;}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:#1a1a1a;color:#fff;font-size:.78rem;font-weight:500;padding:.75rem 1.6rem;border-radius:8px;z-index:999;transition:transform .3s;white-space:nowrap;}
+    .toast.show{transform:translateX(-50%) translateY(0);}
+
+    /* FOOTER */
+    .footer{padding:36px 80px;background:#fff;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+    .footer-logo{font-size:1.1rem;font-weight:800;color:var(--text);}
+    .footer-logo span{color:var(--pink);}
+    .footer-links{display:flex;gap:24px;}
+    .footer-links a{font-size:.8rem;font-weight:500;color:var(--muted);transition:color .18s;}
+    .footer-links a:hover{color:var(--text);}
+    .footer-copy{font-size:.75rem;color:var(--muted);}
+
+    @keyframes cardIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+    .col-card{animation:cardIn .3s ease both;}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="index.html">Scene<span>type</span></a>
+  <ul class="nav-menu">
+    <li><a href="index.html#families">향 계열</a></li>
+    <li><a href="index.html#picks">추천 향수</a></li>
+    <li><a href="info.html">Info</a></li>
+    <li><a href="collection.html" class="active">Collection</a></li>
+  </ul>
+  <a class="nav-cta" href="quiz.html">테스트 시작</a>
+</nav>
+
+<div class="page-hero">
+  <div>
+    <div class="ph-kicker"><span class="ph-kicker-dot"></span>My Perfume Wardrobe</div>
+    <h1 class="ph-title">나의<br><span class="hl">향수 보관함</span></h1>
+  </div>
+  <div class="stats-row">
+    <div class="stat-item"><span class="stat-num" id="statTotal">0</span><span class="stat-lbl">보관 중</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-num" id="statAvg">—</span><span class="stat-lbl">평균 별점</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-num" id="statTop">—</span><span class="stat-lbl">최다 계열</span></div>
+  </div>
+</div>
+
+<div class="toolbar">
+  <div class="filter-group" id="filterGroup">
+    <button class="filter-btn active" onclick="setFilter('all',this)">전체</button>
+    <button class="filter-btn" onclick="setFilter('floral',this)">플로럴</button>
+    <button class="filter-btn" onclick="setFilter('woody',this)">우디</button>
+    <button class="filter-btn" onclick="setFilter('citrus',this)">시트러스</button>
+    <button class="filter-btn" onclick="setFilter('oriental',this)">오리엔탈</button>
+    <button class="filter-btn" onclick="setFilter('musky',this)">머스크</button>
+  </div>
+  <select class="sort-select" id="sortSelect" onchange="renderGrid()">
+    <option value="newest">최신순</option>
+    <option value="oldest">오래된 순</option>
+    <option value="rating_high">별점 높은 순</option>
+    <option value="rating_low">별점 낮은 순</option>
+    <option value="name">이름순</option>
+  </select>
+  <div class="spacer"></div>
+  <button class="btn-add" onclick="openModal()">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+    향수 추가
+  </button>
+</div>
+
+<div class="main-area">
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🌸</div>
+    <h2 class="empty-title">아직 보관된 향수가 없어요</h2>
+    <p class="empty-desc">테스트 결과에서 마음에 드는 향수를 저장하거나 직접 추가해보세요.</p>
+    <button class="btn-empty" onclick="openModal()">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+      첫 향수 추가하기
+    </button>
+  </div>
+  <div class="collection-grid" id="collectionGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <h2 class="modal-title" id="modalTitle">향수 추가하기</h2>
+    <div class="field"><label class="field-label">향수 이름 *</label><input type="text" id="fName" placeholder="예: Peony & Blush Suede"/></div>
+    <div class="field"><label class="field-label">브랜드 *</label><input type="text" id="fBrand" placeholder="예: Jo Malone London"/></div>
+    <div class="field"><label class="field-label">향 계열</label>
+      <select id="fType">
+        <option value="">선택 안 함</option>
+        <option value="floral">플로럴 Floral</option>
+        <option value="woody">우디 Woody</option>
+        <option value="citrus">시트러스 Citrus</option>
+        <option value="oriental">오리엔탈 Oriental</option>
+        <option value="musky">머스크 Musk</option>
+      </select>
+    </div>
+    <div class="field"><label class="field-label">별점</label>
+      <div class="star-picker" id="starPicker">
+        <span class="star-pick" data-val="1" onclick="setStar(1)">★</span>
+        <span class="star-pick" data-val="2" onclick="setStar(2)">★</span>
+        <span class="star-pick" data-val="3" onclick="setStar(3)">★</span>
+        <span class="star-pick" data-val="4" onclick="setStar(4)">★</span>
+        <span class="star-pick" data-val="5" onclick="setStar(5)">★</span>
+      </div>
+    </div>
+    <div class="field"><label class="field-label">메모</label><textarea id="fMemo" rows="3" placeholder="향의 느낌, 어울리는 계절, 기억 등을 자유롭게 적어보세요"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-save" onclick="saveEntry()">저장하기</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer class="footer">
+  <span class="footer-logo">Scene<span>type</span></span>
+  <div class="footer-links"><a href="quiz.html">Quiz</a><a href="info.html">Info</a><a href="collection.html">Collection</a></div>
+  <span class="footer-copy">© 2026 Scenetype — 프로그래밍 언어의 이해 2조</span>
+</footer>
+
+<script>
+const STORAGE_KEY='scenetype_collection';
+const TYPE_META={floral:{label:'플로럴',color:'#e8a0b8',dot:'linear-gradient(135deg,#f4b8d0,#e890b0)'},woody:{label:'우디',color:'#c4966a',dot:'linear-gradient(135deg,#d4a870,#b88040)'},citrus:{label:'시트러스',color:'#d4be50',dot:'linear-gradient(135deg,#f0d860,#d4b830)'},oriental:{label:'오리엔탈',color:'#c47040',dot:'linear-gradient(135deg,#d49070,#b06030)'},musky:{label:'머스크',color:'#9898b0',dot:'linear-gradient(135deg,#b0b0c8,#8888a8)'}};
+let collection=[],currentFilter='all',editingId=null,selectedStar=0;
+
+function load(){try{collection=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch{collection=[];}}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(collection));}
+
+function renderGrid(){
+  const grid=document.getElementById('collectionGrid'),empty=document.getElementById('emptyState'),sort=document.getElementById('sortSelect').value;
+  let items=currentFilter==='all'?[...collection]:collection.filter(c=>c.type===currentFilter);
+  items.sort((a,b)=>{if(sort==='newest')return b.createdAt-a.createdAt;if(sort==='oldest')return a.createdAt-b.createdAt;if(sort==='rating_high')return(b.rating||0)-(a.rating||0);if(sort==='rating_low')return(a.rating||0)-(b.rating||0);if(sort==='name')return a.name.localeCompare(b.name,'ko');return 0;});
+  grid.innerHTML='';
+  if(items.length===0){empty.classList.add('show');grid.style.display='none';}
+  else{empty.classList.remove('show');grid.style.display='grid';items.forEach((item,i)=>{const c=buildCard(item,i);grid.appendChild(c);});}
+  updateStats();
+}
+
+function buildCard(item,idx){
+  const div=document.createElement('div');div.className='col-card';div.style.animationDelay=`${idx*40}ms`;
+  const meta=TYPE_META[item.type]||null;
+  const stars=Array.from({length:5},(_,i)=>`<span class="star ${i<item.rating?'lit':''}">★</span>`).join('');
+  const dateStr=new Date(item.createdAt).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
+  div.innerHTML=`
+    <div class="card-actions">
+      <button class="card-act-btn" onclick="editEntry('${item.id}')" title="수정"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8.5 1.5l2 2L3 11H1V9L8.5 1.5z" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="card-act-btn del" onclick="deleteEntry('${item.id}')" title="삭제"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 3h8M5 3V2h2v1M4 3v6h4V3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <div class="card-type-row">${meta?`<span class="card-type-dot" style="background:${meta.color}"></span><span class="card-type-txt">${meta.label}</span>`:'<span class="card-type-txt">계열 미지정</span>'}</div>
+    <div class="card-brand">${esc(item.brand)}</div>
+    <div class="card-name">${esc(item.name)}</div>
+    <div class="card-stars">${stars}</div>
+    ${item.memo?`<div class="card-memo">${esc(item.memo)}</div>`:''}
+    <div class="card-date">${dateStr}</div>`;
+  return div;
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent=collection.length;
+  const rated=collection.filter(c=>c.rating>0);
+  document.getElementById('statAvg').textContent=rated.length?(rated.reduce((s,c)=>s+c.rating,0)/rated.length).toFixed(1):'—';
+  const tc={};collection.forEach(c=>{if(c.type)tc[c.type]=(tc[c.type]||0)+1;});
+  const top=Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('statTop').textContent=top?(TYPE_META[top[0]]?.label||'—'):'—';
+}
+
+function setFilter(val,btn){
+  currentFilter=val;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderGrid();
+}
+
+function openModal(id){
+  editingId=id||null;selectedStar=0;
+  document.getElementById('modalTitle').textContent=id?'향수 수정하기':'향수 추가하기';
+  if(id){const item=collection.find(c=>c.id===id);if(item){document.getElementById('fName').value=item.name;document.getElementById('fBrand').value=item.brand;document.getElementById('fType').value=item.type||'';document.getElementById('fMemo').value=item.memo||'';selectedStar=item.rating||0;renderStars(selectedStar);}}
+  else{document.getElementById('fName').value='';document.getElementById('fBrand').value='';document.getElementById('fType').value='';document.getElementById('fMemo').value='';renderStars(0);}
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('fName').focus(),200);
+}
+function editEntry(id){openModal(id);}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');editingId=null;}
+function handleOverlayClick(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+
+function setStar(val){selectedStar=selectedStar===val?0:val;renderStars(selectedStar);}
+function renderStars(val){document.querySelectorAll('.star-pick').forEach(s=>s.classList.toggle('active',parseInt(s.dataset.val)<=val));}
+
+function saveEntry(){
+  const name=document.getElementById('fName').value.trim(),brand=document.getElementById('fBrand').value.trim(),type=document.getElementById('fType').value,memo=document.getElementById('fMemo').value.trim();
+  if(!name||!brand){showToast('향수 이름과 브랜드를 입력해주세요');return;}
+  if(editingId){const idx=collection.findIndex(c=>c.id===editingId);if(idx>-1)collection[idx]={...collection[idx],name,brand,type,rating:selectedStar,memo};showToast('수정되었어요 ✓');}
+  else{collection.unshift({id:Date.now().toString(),name,brand,type,rating:selectedStar,memo,createdAt:Date.now()});showToast('보관함에 추가되었어요 ✓');}
+  save();closeModal();renderGrid();
+}
+
+function deleteEntry(id){
+  if(!confirm('이 향수를 삭제할까요?'))return;
+  collection=collection.filter(c=>c.id!==id);save();renderGrid();showToast('삭제되었어요');
+}
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function esc(str){return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if((e.ctrlKey||e.metaKey)&&e.key==='Enter'&&document.getElementById('modalOverlay').classList.contains('open'))saveEntry();});
+
+load();renderGrid();
+
+const params=new URLSearchParams(window.location.search);
+if(params.get('add')==='1'){const name=params.get('name')||'',brand=params.get('brand')||'',type=params.get('type')||'';if(name&&brand){document.getElementById('fName').value=name;document.getElementById('fBrand').value=brand;document.getElementById('fType').value=type;openModal();}}
+</script>
+</body>
+</html>

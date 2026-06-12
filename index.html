@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scenetype — 나를 표현하는 향을 찾아보세요</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f8f8;
+      --card: #f2f2f2;
+      --border: #e8e8e8;
+      --text: #1a1a1a;
+      --text2: #444444;
+      --muted: #888888;
+      --pink: #eb9bb4;
+      --pink-light: #fff5f8;
+      --pink-mid: #ffe4ef;
+      --accent: #1a1a1a;
+      --floral: #e8a0b8;
+      --woody: #c4966a;
+      --citrus: #d4be50;
+      --oriental: #c47040;
+      --musky: #9898b0;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'Pretendard',sans-serif; font-weight:400; overflow-x:hidden; }
+    a { text-decoration:none; color:inherit; }
+    img { max-width:100%; display:block; }
+
+    /* ── NAV ── */
+    .nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      height:64px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 48px;
+    }
+    .nav-logo { font-size:1.3rem; font-weight:800; letter-spacing:-.02em; color:var(--text); }
+    .nav-logo span { color:var(--pink); }
+    .nav-menu { display:flex; align-items:center; gap:32px; list-style:none; }
+    .nav-menu a { font-size:.85rem; font-weight:500; color:var(--muted); transition:color .18s; }
+    .nav-menu a:hover { color:var(--text); }
+    .nav-cta {
+      padding:.55rem 1.4rem;
+      background:var(--pink); color:#fff;
+      font-size:.82rem; font-weight:600;
+      border-radius:6px; transition:opacity .18s;
+    }
+    .nav-cta:hover { opacity:.88; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height:100vh;
+      display:grid; grid-template-columns:1fr 1fr;
+      align-items:center; gap:60px;
+      padding:120px 80px 80px;
+      background:#fff;
+    }
+    .hero-left {}
+    .hero-tag {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:.72rem; font-weight:600; letter-spacing:.1em;
+      text-transform:uppercase; color:var(--pink);
+      background:var(--pink-light);
+      padding:.35rem .9rem; border-radius:100px;
+      margin-bottom:28px;
+      animation:fadeUp .6s .1s both;
+    }
+    .hero-tag-dot { width:6px; height:6px; border-radius:50%; background:var(--pink); }
+    .hero-title {
+      font-size:clamp(2.4rem,4.5vw,4rem);
+      font-weight:800; line-height:1.18;
+      letter-spacing:-.03em; color:var(--text);
+      margin-bottom:20px;
+      animation:fadeUp .7s .2s both;
+    }
+    .hero-title .hl { color:var(--pink); }
+    .hero-desc {
+      font-size:1rem; line-height:1.85; color:var(--text2);
+      margin-bottom:36px; max-width:460px;
+      animation:fadeUp .7s .3s both;
+    }
+    .hero-actions {
+      display:flex; gap:12px; align-items:center;
+      animation:fadeUp .7s .4s both;
+    }
+    .btn-hero-main {
+      padding:.85rem 2rem;
+      background:var(--pink); color:#fff;
+      font-size:.9rem; font-weight:700;
+      border-radius:8px; border:none; cursor:pointer;
+      transition:all .2s;
+      box-shadow:0 4px 16px rgba(235,155,180,.25);
+    }
+    .btn-hero-main:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(235,155,180,.3); }
+    .btn-hero-sub {
+      padding:.85rem 1.6rem;
+      background:transparent; color:var(--text);
+      font-size:.9rem; font-weight:600;
+      border-radius:8px; border:1.5px solid var(--border); cursor:pointer;
+      transition:all .2s;
+    }
+    .btn-hero-sub:hover { border-color:var(--text); }
+    .hero-meta {
+      display:flex; gap:28px; margin-top:40px;
+      animation:fadeUp .7s .5s both;
+    }
+    .hero-meta-item { }
+    .hero-meta-num { font-size:1.6rem; font-weight:800; color:var(--text); display:block; line-height:1; }
+    .hero-meta-lbl { font-size:.72rem; font-weight:500; color:var(--muted); margin-top:3px; display:block; }
+
+    /* hero right — scent card visual */
+    .hero-right {
+      display:flex; flex-direction:column; gap:16px;
+      animation:fadeIn 1s .5s both;
+    }
+    .hero-card-main {
+      background:var(--pink-light);
+      border:1px solid var(--pink-mid);
+      border-radius:16px; padding:32px;
+      position:relative; overflow:hidden;
+    }
+    .hero-card-main::before {
+      content:'';
+      position:absolute; top:-30px; right:-30px;
+      width:160px; height:160px; border-radius:50%;
+      background:rgba(235,155,180,.07);
+    }
+    .hc-label { font-size:.68rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--pink); margin-bottom:10px; }
+    .hc-type { font-size:1.8rem; font-weight:800; letter-spacing:-.02em; margin-bottom:8px; color:var(--text); }
+    .hc-desc { font-size:.85rem; line-height:1.7; color:var(--text2); margin-bottom:20px; }
+    .hc-bars { display:flex; flex-direction:column; gap:8px; }
+    .hc-bar-row { display:flex; align-items:center; gap:10px; }
+    .hc-bar-lbl { font-size:.62rem; font-weight:600; color:var(--muted); width:56px; flex-shrink:0; }
+    .hc-bar-track { flex:1; height:4px; background:rgba(0,0,0,.08); border-radius:2px; overflow:hidden; }
+    .hc-bar-fill { height:100%; border-radius:2px; }
+    .hc-bar-pct { font-size:.62rem; font-weight:700; color:var(--text); width:28px; text-align:right; flex-shrink:0; }
+
+    .hero-card-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .hero-card-sm {
+      background:#fff; border:1px solid var(--border);
+      border-radius:12px; padding:20px 18px;
+    }
+    .hcs-icon { font-size:1.4rem; margin-bottom:8px; }
+    .hcs-name { font-size:.82rem; font-weight:700; color:var(--text); margin-bottom:3px; }
+    .hcs-sub { font-size:.7rem; color:var(--muted); }
+
+    /* COMPACT SCENT MIXER */
+    .scent-mixer { padding: 80px; background: #fff; border-bottom: 1px solid var(--border); }
+    .sm-container { display: flex; align-items: center; justify-content: center; gap: 60px; max-width: 800px; margin: 30px auto 0; }
+
+    /* 향기 오라 (Aura) 시각화 */
+    .sm-visual { position: relative; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sm-aura { position: absolute; inset: 0; border-radius: 50%; background: var(--surface); filter: blur(24px); transition: background 1s ease; opacity: 0.8; }
+    .sm-aura-text { position: relative; z-index: 2; font-size: 0.75rem; font-weight: 700; color: var(--muted); letter-spacing: 0.1em; }
+
+    /* 컨트롤 & 칩 */
+    .sm-controls { flex: 1; min-width: 280px; }
+    .sm-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .sm-chip { padding: 10px 16px; font-size: 0.8rem; font-weight: 600; color: var(--text2); background: #fff; border: 1.5px solid var(--border); border-radius: 100px; cursor: pointer; transition: all 0.2s; }
+    .sm-chip:hover { border-color: var(--pink); color: var(--pink); }
+    .sm-chip.selected { background: var(--pink-light); border-color: var(--pink); color: var(--pink); transform: scale(0.95); pointer-events: none; }
+    .sm-chip.disabled { opacity: 0.4; pointer-events: none; }
+
+    /* 결과창 */
+    .sm-result { display: none; margin-top: 20px; animation: fadeIn 0.4s forwards; }
+    .sm-result-vibe { font-size: 0.85rem; line-height: 1.6; color: var(--text2); margin-bottom: 12px; }
+    .sm-match { background: var(--surface); padding: 16px; border-radius: 8px; border-left: 3px solid var(--pink); margin-bottom: 16px; }
+    .sm-match-lbl { font-size: 0.65rem; font-weight: 700; color: var(--pink); margin-bottom: 4px; }
+    .sm-match-name { font-size: 0.95rem; font-weight: 800; color: var(--text); }
+    .sm-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-sm-primary { padding: 10px 18px; background: var(--text); color: #fff; font-size: 0.8rem; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-sm-primary:hover { opacity: 0.8; }
+    .btn-sm-text { background: none; border: none; font-size: 0.75rem; color: var(--muted); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+    @media (max-width: 768px) { .sm-container { flex-direction: column; gap: 30px; } }
+
+    /* ── HOW IT WORKS ── */
+    .hiw { padding:100px 80px; background:var(--surface); }
+    .sec-kicker {
+      font-size:.72rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--pink); margin-bottom:12px; text-align:center;
+    }
+    .sec-title { font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-.02em; text-align:center; margin-bottom:56px; }
+    .sec-title .hl { color:var(--pink); }
+    .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .step {
+      background:#fff; padding:40px 32px;
+      transition:background .2s;
+    }
+    .step:hover { background:var(--pink-light); }
+    .step-num {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:40px; height:40px; border-radius:10px;
+      background:var(--pink); color:#fff;
+      font-size:1rem; font-weight:800;
+      margin-bottom:20px;
+    }
+    .step-title { font-size:1.05rem; font-weight:700; margin-bottom:10px; }
+    .step-desc { font-size:.84rem; line-height:1.75; color:var(--text2); }
+
+    /* ── SCENT FAMILIES ── */
+    .families { padding:100px 80px; background:#fff; }
+    .families-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:44px; }
+    .families-head-left {}
+    .link-more {
+      font-size:.82rem; font-weight:600; color:var(--pink);
+      display:inline-flex; align-items:center; gap:4px;
+      transition:gap .18s;
+    }
+    .link-more:hover { gap:8px; }
+    .families-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+    .fam-card {
+      background:#fff; border:1.5px solid var(--border);
+      border-radius:12px; padding:24px 18px;
+      cursor:pointer; transition:all .22s;
+      text-decoration:none; color:inherit;
+    }
+    .fam-card:hover { border-color:var(--pink); transform:translateY(-4px); box-shadow:0 12px 32px rgba(235,155,180,.10); }
+    .fam-dot { width:36px; height:36px; border-radius:10px; margin-bottom:14px; }
+    .fam-name { font-size:.95rem; font-weight:700; margin-bottom:4px; }
+    .fam-notes { font-size:.72rem; color:var(--muted); line-height:1.6; }
+
+    /* ── PICKS ── */
+    .picks { padding:100px 80px; background:var(--surface); }
+    .picks-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:44px; }
+    .picks-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .pick-card {
+      background:#fff; border-radius:14px;
+      border:1px solid var(--border); overflow:hidden;
+      transition:all .22s; cursor:pointer;
+    }
+    .pick-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,.08); }
+    .pick-thumb {
+      height:180px; background:linear-gradient(135deg,#fde8f0,#f8d0e0);
+      display:flex; align-items:center; justify-content:center;
+      font-size:3rem; position:relative; overflow:hidden;
+    }
+    .pick-thumb-bg {
+      position:absolute; inset:0;
+      background:linear-gradient(135deg,var(--c1,#fde8f0),var(--c2,#f8d0e0));
+    }
+    .pick-thumb-emoji { font-size:2.8rem; z-index:1; }
+    .pick-season {
+      position:absolute; top:12px; left:12px; z-index:2;
+      font-size:.6rem; font-weight:700; letter-spacing:.1em;
+      text-transform:uppercase; color:var(--pink);
+      background:#fff; padding:.2rem .55rem; border-radius:100px;
+    }
+    .pick-body { padding:18px; }
+    .pick-brand { font-size:.65rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+    .pick-name { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:12px; line-height:1.3; }
+    .pick-note-rows { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+    .pick-note-row { display:flex; align-items:center; gap:8px; }
+    .pick-note-lbl { font-size:.58rem; font-weight:600; color:var(--muted); width:28px; flex-shrink:0; }
+    .pick-note-track { flex:1; height:3px; background:var(--border); border-radius:2px; overflow:hidden; }
+    .pick-note-fill { height:100%; background:var(--pink); border-radius:2px; opacity:.6; }
+    .pick-note-text { font-size:.6rem; color:var(--muted); white-space:nowrap; }
+    .pick-tags { display:flex; flex-wrap:wrap; gap:4px; }
+    .pick-tag { font-size:.58rem; font-weight:600; padding:.18rem .5rem; background:var(--pink-light); color:var(--pink); border-radius:4px; }
+
+    /* ── QUIZ CTA ── */
+    .quiz-cta {
+      padding:100px 80px;
+      background:var(--pink);
+      display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+    }
+    .qc-kicker { font-size:.72rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:12px; }
+    .qc-title { font-size:clamp(2rem,4vw,3.2rem); font-weight:800; letter-spacing:-.02em; color:#fff; line-height:1.18; margin-bottom:16px; }
+    .qc-desc { font-size:.95rem; line-height:1.8; color:rgba(255,255,255,.85); margin-bottom:32px; }
+    .btn-qc {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:.9rem 2rem; background:#fff; color:var(--pink);
+      font-size:.9rem; font-weight:700; border-radius:8px;
+      border:none; cursor:pointer; transition:all .2s;
+      box-shadow:0 4px 20px rgba(0,0,0,.12);
+    }
+    .btn-qc:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,0,0,.16); }
+    .qc-right { display:flex; flex-direction:column; gap:14px; }
+    .qc-item {
+      background:rgba(255,255,255,.12); border-radius:12px;
+      padding:20px 22px; display:flex; align-items:flex-start; gap:16px;
+      backdrop-filter:blur(8px);
+    }
+    .qc-item-num { font-size:1.6rem; font-weight:800; color:rgba(255,255,255,.4); line-height:1; flex-shrink:0; }
+    .qc-item-title { font-size:.9rem; font-weight:700; color:#fff; margin-bottom:3px; }
+    .qc-item-desc { font-size:.78rem; line-height:1.65; color:rgba(255,255,255,.75); }
+
+    /* ── FOOTER ── */
+    .footer {
+      padding:40px 80px;
+      background:#fff; border-top:1px solid var(--border);
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .footer-logo { font-size:1.1rem; font-weight:800; color:var(--text); }
+    .footer-logo span { color:var(--pink); }
+    .footer-links { display:flex; gap:24px; }
+    .footer-links a { font-size:.8rem; font-weight:500; color:var(--muted); transition:color .18s; }
+    .footer-links a:hover { color:var(--text); }
+    .footer-copy { font-size:.75rem; color:var(--muted); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+    .reveal-d1 { transition-delay:.1s; }
+    .reveal-d2 { transition-delay:.2s; }
+    .reveal-d3 { transition-delay:.3s; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html">Scene<span>type</span></a>
+  <ul class="nav-menu">
+    <li><a href="#families">향 계열</a></li>
+    <li><a href="#picks">추천 향수</a></li>
+    <li><a href="info.html">Info</a></li>
+    <li><a href="collection.html">Collection</a></li>
+  </ul>
+  <a class="nav-cta" href="quiz.html">테스트 시작</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag"><span class="hero-tag-dot"></span>MBTI × Perfume</div>
+    <h1 class="hero-title">
+      나를 표현하는<br>
+      <span class="hl">향을 찾아보세요</span>
+    </h1>
+    <p class="hero-desc">
+      10가지 질문에 답하면, 당신의 성격 유형에 꼭 맞는 퍼스널 향수를 추천해드립니다. 수천 가지 향 중에서, 진짜 '나'의 향을 발견하세요.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-hero-main" onclick="location.href='quiz.html'">테스트 시작하기 →</button>
+      <button class="btn-hero-sub" onclick="location.href='info.html'">향수 정보 보기</button>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">10</span>
+        <span class="hero-meta-lbl">감성 질문</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">5</span>
+        <span class="hero-meta-lbl">향 계열 분석</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">3분</span>
+        <span class="hero-meta-lbl">소요 시간</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">무료</span>
+        <span class="hero-meta-lbl">체험</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card-main">
+      <p class="hc-label">나의 향 프로필 예시</p>
+      <p class="hc-type">🌸 플로럴 타입</p>
+      <p class="hc-desc">섬세하고 로맨틱한 감성의 소유자. 봄날의 정원 같은 따뜻함을 지닌 당신에게.</p>
+      <div class="hc-bars">
+        <div class="hc-bar-row">
+          <span class="hc-bar-lbl">Floral</span>
+          <div class="hc-bar-track"><div class="hc-bar-fill" style="width:72%;background:#e8a0b8"></div></div>
+          <span class="hc-bar-pct">72%</span>
+        </div>
+        <div class="hc-bar-row">
+          <span class="hc-bar-lbl">Woody</span>
+          <div class="hc-bar-track"><div class="hc-bar-fill" style="width:38%;background:#c4966a"></div></div>
+          <span class="hc-bar-pct">38%</span>
+        </div>
+        <div class="hc-bar-row">
+          <span class="hc-bar-lbl">Citrus</span>
+          <div class="hc-bar-track"><div class="hc-bar-fill" style="width:20%;background:#d4be50"></div></div>
+          <span class="hc-bar-pct">20%</span>
+        </div>
+        <div class="hc-bar-row">
+          <span class="hc-bar-lbl">Oriental</span>
+          <div class="hc-bar-track"><div class="hc-bar-fill" style="width:14%;background:#c47040"></div></div>
+          <span class="hc-bar-pct">14%</span>
+        </div>
+        <div class="hc-bar-row">
+          <span class="hc-bar-lbl">Musk</span>
+          <div class="hc-bar-track"><div class="hc-bar-fill" style="width:18%;background:#9898b0"></div></div>
+          <span class="hc-bar-pct">18%</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-card-row">
+      <div class="hero-card-sm">
+        <div class="hcs-icon">💐</div>
+        <div class="hcs-name">Jo Malone</div>
+        <div class="hcs-sub">Peony & Blush Suede</div>
+      </div>
+      <div class="hero-card-sm">
+        <div class="hcs-icon">🌹</div>
+        <div class="hcs-name">Dior</div>
+        <div class="hcs-sub">Miss Dior Blooming</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scent-mixer">
+  <div class="sm-header reveal">
+    <p class="sec-kicker" style="text-align:center;">My Signature Blend</p>
+    <h2 class="sec-title" style="text-align:center; font-size:1.8rem;">나만의 향 조합하기</h2>
+  </div>
+
+  <div class="sm-container reveal">
+    <div class="sm-visual">
+      <div class="sm-aura" id="scentAura"></div>
+      <p class="sm-aura-text" id="auraText">0 / 3 Notes</p>
+    </div>
+
+    <div class="sm-controls">
+      <div class="sm-chips" id="smChips">
+        <button class="sm-chip" onclick="mixNote('citrus', '#d4be50')">레몬·베르가못 (Citrus)</button>
+        <button class="sm-chip" onclick="mixNote('floral', '#e8a0b8')">피오니·장미 (Floral)</button>
+        <button class="sm-chip" onclick="mixNote('woody', '#c4966a')">샌달우드·시더 (Woody)</button>
+        <button class="sm-chip" onclick="mixNote('oriental', '#c47040')">앰버·바닐라 (Oriental)</button>
+        <button class="sm-chip" onclick="mixNote('musky', '#9898b0')">화이트 머스크 (Musky)</button>
+      </div>
+
+      <div class="sm-result" id="smResult">
+        <p class="sm-result-vibe" id="resultVibe"></p>
+        <div class="sm-match">
+          <p class="sm-match-lbl">💡 이 조합과 비슷한 실제 향수</p>
+          <p class="sm-match-name" id="matchPerfume"></p>
+        </div>
+        <div class="sm-actions">
+          <button class="btn-sm-primary" onclick="location.href='quiz.html'">내 성향과 비교하기 →</button>
+          <button class="btn-sm-text" onclick="resetMixer()">다시 조합하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="hiw">
+  <p class="sec-kicker reveal">How it works</p>
+  <h2 class="sec-title reveal">3단계로 <span class="hl">나만의 향수</span>를 찾아요</h2>
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3 class="step-title">성격 질문에 답하기</h3>
+      <p class="step-desc">일상 속 상황을 묻는 10가지 감성 질문에 답해요. 딱딱한 심리검사가 아닌, 재미있는 시나리오 형식이에요.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3 class="step-title">향 계열 자동 분석</h3>
+      <p class="step-desc">답변을 바탕으로 플로럴, 우디, 시트러스 등 어울리는 향 계열을 자동으로 계산해드려요.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3 class="step-title">맞춤 향수 추천 받기</h3>
+      <p class="step-desc">도출된 유형에 맞는 실제 향수 3가지를 노트 정보와 함께 추천해드려요. SNS 공유도 가능해요.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCENT FAMILIES -->
+<section class="families" id="families">
+  <div class="families-head reveal">
+    <div>
+      <p class="sec-kicker" style="text-align:left;margin-bottom:8px">Scent Families</p>
+      <h2 class="sec-title" style="text-align:left;margin-bottom:0;font-size:clamp(1.5rem,3vw,2.2rem)">향 계열 미리보기</h2>
+    </div>
+    <a class="link-more" href="info.html#families">자세히 보기 →</a>
+  </div>
+  <div class="families-grid reveal">
+    <a class="fam-card" href="info.html#floral">
+      <div class="fam-dot" style="background:linear-gradient(135deg,#f4b8d0,#e890b0)"></div>
+      <div class="fam-name">🌸 플로럴</div>
+      <div class="fam-notes">장미, 피오니, 재스민</div>
+    </a>
+    <a class="fam-card" href="info.html#woody">
+      <div class="fam-dot" style="background:linear-gradient(135deg,#d4a870,#b88040)"></div>
+      <div class="fam-name">🌲 우디</div>
+      <div class="fam-notes">샌달우드, 시더, 머스크</div>
+    </a>
+    <a class="fam-card" href="info.html#citrus">
+      <div class="fam-dot" style="background:linear-gradient(135deg,#f0d860,#d4b830)"></div>
+      <div class="fam-name">🍋 시트러스</div>
+      <div class="fam-notes">베르가못, 레몬, 자몽</div>
+    </a>
+    <a class="fam-card" href="info.html#oriental">
+      <div class="fam-dot" style="background:linear-gradient(135deg,#d49070,#b06030)"></div>
+      <div class="fam-name">🏮 오리엔탈</div>
+      <div class="fam-notes">앰버, 바닐라, 스파이스</div>
+    </a>
+    <a class="fam-card" href="info.html#musky">
+      <div class="fam-dot" style="background:linear-gradient(135deg,#b0b0c8,#8888a8)"></div>
+      <div class="fam-name">🌫 머스크</div>
+      <div class="fam-notes">화이트 머스크, 파우더</div>
+    </a>
+  </div>
+</section>
+
+<!-- PICKS -->
+<section class="picks" id="picks">
+  <div class="picks-head reveal">
+    <div>
+      <p class="sec-kicker" style="text-align:left;margin-bottom:8px">Curated Selection</p>
+      <h2 class="sec-title" style="text-align:left;margin-bottom:0;font-size:clamp(1.5rem,3vw,2.2rem)">계절별 추천 향수</h2>
+    </div>
+    <a class="link-more" href="recommend.html?type=floral&floral=60&woody=15&citrus=10&oriental=10&musky=5">전체 보기 →</a>
+  </div>
+  <div class="picks-grid reveal">
+    <!-- FLORAL -->
+    <div class="pick-card">
+      <div class="pick-thumb" style="--c1:#fde8f4;--c2:#f8c8e4">
+        <div class="pick-thumb-bg"></div>
+        <span class="pick-season">Spring · 플로럴</span>
+        <span class="pick-thumb-emoji">🌸</span>
+      </div>
+      <div class="pick-body">
+        <div class="pick-brand">Jo Malone London</div>
+        <div class="pick-name">Peony & Blush Suede</div>
+        <div class="pick-note-rows">
+          <div class="pick-note-row"><span class="pick-note-lbl">Top</span><div class="pick-note-track"><div class="pick-note-fill" style="width:75%"></div></div><span class="pick-note-text">레드 애플</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Mid</span><div class="pick-note-track"><div class="pick-note-fill" style="width:92%"></div></div><span class="pick-note-text">피오니, 장미</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Base</span><div class="pick-note-track"><div class="pick-note-fill" style="width:60%"></div></div><span class="pick-note-text">스웨이드</span></div>
+        </div>
+        <div class="pick-tags"><span class="pick-tag">플로럴</span><span class="pick-tag">봄</span><span class="pick-tag">중고가</span></div>
+      </div>
+    </div>
+    <!-- FLORAL 2 -->
+    <div class="pick-card">
+      <div class="pick-thumb" style="--c1:#f9e8f8;--c2:#f0c8f0">
+        <div class="pick-thumb-bg"></div>
+        <span class="pick-season">All Season · 플로럴</span>
+        <span class="pick-thumb-emoji">💐</span>
+      </div>
+      <div class="pick-body">
+        <div class="pick-brand">Parfums de Marly</div>
+        <div class="pick-name">Delina</div>
+        <div class="pick-note-rows">
+          <div class="pick-note-row"><span class="pick-note-lbl">Top</span><div class="pick-note-track"><div class="pick-note-fill" style="width:72%"></div></div><span class="pick-note-text">루바브, 베르가못</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Mid</span><div class="pick-note-track"><div class="pick-note-fill" style="width:95%"></div></div><span class="pick-note-text">터키 로즈</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Base</span><div class="pick-note-track"><div class="pick-note-fill" style="width:68%"></div></div><span class="pick-note-text">머스크, 시더</span></div>
+        </div>
+        <div class="pick-tags"><span class="pick-tag">플로럴</span><span class="pick-tag">파우더리</span><span class="pick-tag">니치</span></div>
+      </div>
+    </div>
+    <!-- WOODY -->
+    <div class="pick-card">
+      <div class="pick-thumb" style="--c1:#f4ece0;--c2:#e8d4b8">
+        <div class="pick-thumb-bg"></div>
+        <span class="pick-season">Autumn · 우디</span>
+        <span class="pick-thumb-emoji">🌲</span>
+      </div>
+      <div class="pick-body">
+        <div class="pick-brand">Le Labo</div>
+        <div class="pick-name">Santal 33</div>
+        <div class="pick-note-rows">
+          <div class="pick-note-row"><span class="pick-note-lbl">Top</span><div class="pick-note-track"><div class="pick-note-fill" style="width:68%"></div></div><span class="pick-note-text">카다몸, 바이올렛</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Mid</span><div class="pick-note-track"><div class="pick-note-fill" style="width:95%"></div></div><span class="pick-note-text">샌달우드, 아이리스</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Base</span><div class="pick-note-track"><div class="pick-note-fill" style="width:80%"></div></div><span class="pick-note-text">앰버우드</span></div>
+        </div>
+        <div class="pick-tags"><span class="pick-tag">우디</span><span class="pick-tag">유니섹스</span><span class="pick-tag">니치</span></div>
+      </div>
+    </div>
+    <!-- WOODY 2 -->
+    <div class="pick-card">
+      <div class="pick-thumb" style="--c1:#ece4d8;--c2:#d8c8a8">
+        <div class="pick-thumb-bg"></div>
+        <span class="pick-season">All Season · 우디</span>
+        <span class="pick-thumb-emoji">🪵</span>
+      </div>
+      <div class="pick-body">
+        <div class="pick-brand">Hermès</div>
+        <div class="pick-name">Terre d'Hermès</div>
+        <div class="pick-note-rows">
+          <div class="pick-note-row"><span class="pick-note-lbl">Top</span><div class="pick-note-track"><div class="pick-note-fill" style="width:80%"></div></div><span class="pick-note-text">오렌지, 자몽</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Mid</span><div class="pick-note-track"><div class="pick-note-fill" style="width:75%"></div></div><span class="pick-note-text">페퍼, 제라늄</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Base</span><div class="pick-note-track"><div class="pick-note-fill" style="width:88%"></div></div><span class="pick-note-text">베티버, 오크</span></div>
+        </div>
+        <div class="pick-tags"><span class="pick-tag">우디</span><span class="pick-tag">어시</span><span class="pick-tag">고가</span></div>
+      </div>
+    </div>
+    <!-- CITRUS -->
+    <div class="pick-card">
+      <div class="pick-thumb" style="--c1:#e8f4fc;--c2:#c8e8f8">
+        <div class="pick-thumb-bg"></div>
+        <span class="pick-season">Summer · 시트러스</span>
+        <span class="pick-thumb-emoji">🍋</span>
+      </div>
+      <div class="pick-body">
+        <div class="pick-brand">Giorgio Armani</div>
+        <div class="pick-name">Acqua di Giò</div>
+        <div class="pick-note-rows">
+          <div class="pick-note-row"><span class="pick-note-lbl">Top</span><div class="pick-note-track"><div class="pick-note-fill" style="width:88%"></div></div><span class="pick-note-text">시칠리안 레몬</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Mid</span><div class="pick-note-track"><div class="pick-note-fill" style="width:72%"></div></div><span class="pick-note-text">로즈마리, 피치</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Base</span><div class="pick-note-track"><div class="pick-note-fill" style="width:58%"></div></div><span class="pick-note-text">화이트 머스크</span></div>
+        </div>
+        <div class="pick-tags"><span class="pick-tag">시트러스</span><span class="pick-tag">여름</span><span class="pick-tag">중고가</span></div>
+      </div>
+    </div>
+    <!-- CITRUS 2 -->
+    <div class="pick-card">
+      <div class="pick-thumb" style="--c1:#fefce8;--c2:#f8f0b8">
+        <div class="pick-thumb-bg"></div>
+        <span class="pick-season">Summer · 시트러스</span>
+        <span class="pick-thumb-emoji">🍊</span>
+      </div>
+      <div class="pick-body">
+        <div class="pick-brand">Atelier Cologne</div>
+        <div class="pick-name">Orange Sanguine</div>
+        <div class="pick-note-rows">
+          <div class="pick-note-row"><span class="pick-note-lbl">Top</span><div class="pick-note-track"><div class="pick-note-fill" style="width:92%"></div></div><span class="pick-note-text">블러드 오렌지</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Mid</span><div class="pick-note-track"><div class="pick-note-fill" style="width:80%"></div></div><span class="pick-note-text">재스민, 오렌지 블라섬</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Base</span><div class="pick-note-track"><div class="pick-note-fill" style="width:65%"></div></div><span class="pick-note-text">베티버, 통카빈</span></div>
+        </div>
+        <div class="pick-tags"><span class="pick-tag">시트러스</span><span class="pick-tag">니치</span><span class="pick-tag">고가</span></div>
+      </div>
+    </div>
+    <!-- ORIENTAL -->
+    <div class="pick-card">
+      <div class="pick-thumb" style="--c1:#1a1a2e;--c2:#2d1b3d">
+        <div class="pick-thumb-bg"></div>
+        <span class="pick-season">Winter · 오리엔탈</span>
+        <span class="pick-thumb-emoji">🖤</span>
+      </div>
+      <div class="pick-body">
+        <div class="pick-brand">Yves Saint Laurent</div>
+        <div class="pick-name">Black Opium</div>
+        <div class="pick-note-rows">
+          <div class="pick-note-row"><span class="pick-note-lbl">Top</span><div class="pick-note-track"><div class="pick-note-fill" style="width:80%"></div></div><span class="pick-note-text">핑크 페퍼</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Mid</span><div class="pick-note-track"><div class="pick-note-fill" style="width:88%"></div></div><span class="pick-note-text">커피, 재스민</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Base</span><div class="pick-note-track"><div class="pick-note-fill" style="width:92%"></div></div><span class="pick-note-text">바닐라, 파출리</span></div>
+        </div>
+        <div class="pick-tags"><span class="pick-tag">오리엔탈</span><span class="pick-tag">겨울</span><span class="pick-tag">고가</span></div>
+      </div>
+    </div>
+    <!-- MUSKY -->
+    <div class="pick-card">
+      <div class="pick-thumb" style="--c1:#f0f0f8;--c2:#d8d8e8">
+        <div class="pick-thumb-bg"></div>
+        <span class="pick-season">All Season · 머스크</span>
+        <span class="pick-thumb-emoji">🌫</span>
+      </div>
+      <div class="pick-body">
+        <div class="pick-brand">Narciso Rodriguez</div>
+        <div class="pick-name">For Her</div>
+        <div class="pick-note-rows">
+          <div class="pick-note-row"><span class="pick-note-lbl">Top</span><div class="pick-note-track"><div class="pick-note-fill" style="width:72%"></div></div><span class="pick-note-text">로즈우드</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Mid</span><div class="pick-note-track"><div class="pick-note-fill" style="width:95%"></div></div><span class="pick-note-text">머스크, 플럼</span></div>
+          <div class="pick-note-row"><span class="pick-note-lbl">Base</span><div class="pick-note-track"><div class="pick-note-fill" style="width:80%"></div></div><span class="pick-note-text">앰버, 베티버</span></div>
+        </div>
+        <div class="pick-tags"><span class="pick-tag">머스크</span><span class="pick-tag">사계절</span><span class="pick-tag">중고가</span></div>
+      </div>
+    </div>
+  
+  
+</section>
+
+<!-- QUIZ CTA -->
+<section class="quiz-cta">
+  <div>
+    <p class="qc-kicker">Personality × Scent</p>
+    <h2 class="qc-title">나만의 향,<br>지금 찾아보세요</h2>
+    <p class="qc-desc">MBTI 테스트처럼 간단한 10가지 질문으로 당신의 성향에 딱 맞는 향수를 무료로 추천받아보세요.</p>
+    <button class="btn-qc" onclick="location.href='quiz.html'">
+      테스트 시작하기
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <div class="qc-right">
+    <div class="qc-item">
+      <span class="qc-item-num">10</span>
+      <div>
+        <div class="qc-item-title">감성적 질문</div>
+        <div class="qc-item-desc">일상 속 상황으로 구성된 재미있는 질문들로 약 3분이면 완료돼요.</div>
+      </div>
+    </div>
+    <div class="qc-item">
+      <span class="qc-item-num">5</span>
+      <div>
+        <div class="qc-item-title">향 계열 분석</div>
+        <div class="qc-item-desc">플로럴, 우디, 시트러스, 오리엔탈, 머스크 중 나의 계열을 찾아드려요.</div>
+      </div>
+    </div>
+    <div class="qc-item">
+      <span class="qc-item-num">3</span>
+      <div>
+        <div class="qc-item-title">맞춤 향수 추천</div>
+        <div class="qc-item-desc">유형에 맞는 실제 향수 3개를 노트 정보와 브랜드와 함께 추천해드려요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="footer-logo">Scene<span>type</span></span>
+  <div class="footer-links">
+    <a href="quiz.html">Quiz</a>
+    <a href="info.html">Info</a>
+    <a href="collection.html">Collection</a>
+  </div>
+  <span class="footer-copy">© 2026 Scenetype — 프로그래밍 언어의 이해 2조</span>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. 랜덤으로 보여줄 플로럴 계열 MBTI 데이터 배열
+    const mbtiExamples = [
+      { 
+        type: "🌸 INFP 달빛 산책자형", 
+        desc: "섬세하고 로맨틱한 감성의 소유자. 봄날의 정원 같은 따뜻함을 지닌 당신에게." 
+      },
+      { 
+        type: "🌸 ENFJ 봄 정원 산책자형", 
+        desc: "따뜻하고 사람을 끌어당기는 당신. 풍성하고 포근한 플로럴 향이 어울려요." 
+      },
+      { 
+        type: "🌸 ESFJ 따뜻한 햇살 정원형", 
+        desc: "따뜻하고 헌신적인 당신. 포근하고 친근한 플로럴 향이 완벽하게 어울려요." 
+      },
+      { 
+        type: "🌸 ISFP 숲속 수채화형", 
+        desc: "예술적이고 감각적인 당신. 자연스럽고 감성적인 플로럴 향이 어울려요." 
+      },
+      { 
+        type: "🌸 INFJ 새벽 이슬 명상형", 
+        desc: "통찰력 있고 이상적인 당신. 신비롭고 깊은 플로럴 향이 잘 어울려요." 
+      }
+    ];
+
+    // 2. 배열에서 랜덤으로 하나 뽑기
+    const randomIndex = Math.floor(Math.random() * mbtiExamples.length);
+    const selectedExample = mbtiExamples[randomIndex];
+
+    // 3. 화면의 텍스트를 뽑은 데이터로 교체하기
+    const typeElement = document.querySelector('.hc-type');
+    const descElement = document.querySelector('.hc-desc');
+
+    if (typeElement && descElement) {
+      typeElement.textContent = selectedExample.type;
+      descElement.textContent = selectedExample.desc;
+    }
+  });
+
+  // 스크롤 애니메이션 (Reveal)
+  const revEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  revEls.forEach(el => obs.observe(el));
+
+  // ══════════════════════════════════════
+  // COMPACT SCENT MIXER (나만의 향 조합하기)
+  // ══════════════════════════════════════
+  let mixedNotes = [];
+  let mixedColors = [];
+
+  // 조합에 따른 실제 향수 매칭 데이터베이스 (총 10가지 모든 경우의 수 완비)
+  const PERFUME_DB = {
+    // 1. 시트러스 + 플로럴 + 머스크
+    'citrus,floral,musky': { name: 'Byredo - Blanche (바이레도 블랑쉬)', vibe: '갓 세탁한 셔츠처럼 깨끗하고 포근한 비누향' },
+    
+    // 2. 플로럴 + 머스크 + 우디
+    'floral,musky,woody': { name: 'Diptyque - Fleur de Peau (플레르 드 뽀)', vibe: '피부 내음처럼 부드럽고 관능적인 살냄새' },
+    
+    // 3. 시트러스 + 머스크 + 우디
+    'citrus,musky,woody': { name: 'Creed - Silver Mountain Water', vibe: '알프스의 맑은 공기와 서늘한 바람 같은 청량함' },
+    
+    // 4. 플로럴 + 오리엔탈 + 우디
+    'floral,oriental,woody': { name: 'Tom Ford - Black Orchid', vibe: '다크하고 치명적인 분위기의 관능적인 향' },
+    
+    // 5. 시트러스 + 오리엔탈 + 우디
+    'citrus,oriental,woody': { name: 'Hermès - Terre d\'Hermès', vibe: '비 온 뒤 젖은 흙과 오렌지 껍질의 세련된 조화' },
+
+    // 6. 시트러스 + 플로럴 + 우디 (추가)
+    'citrus,floral,woody': { name: 'Jo Malone - English Pear & Freesia', vibe: '신선한 배의 과즙과 우아한 프리지아, 그리고 깊은 우디의 조화' },
+
+    // 7. 시트러스 + 플로럴 + 오리엔탈 (추가)
+    'citrus,floral,oriental': { name: 'Chanel - Coco Mademoiselle', vibe: '상큼한 오렌지와 관능적인 패출리가 섞인 세련되고 우아한 무드' },
+
+    // 8. 시트러스 + 머스크 + 오리엔탈 (추가)
+    'citrus,musky,oriental': { name: 'Byredo - Gypsy Water (바이레도 집시 워터)', vibe: '솔잎과 숲의 숨결에 달콤한 바닐라가 얹혀진 신비로운 향' },
+
+    // 9. 플로럴 + 머스크 + 오리엔탈 (추가)
+    'floral,musky,oriental': { name: 'Narciso Rodriguez - For Her', vibe: '우아한 장미와 묵직한 머스크가 만난 치명적이고 부드러운 향' },
+
+    // 10. 머스크 + 오리엔탈 + 우디 (추가)
+    'musky,oriental,woody': { name: 'Tom Ford - Oud Wood (톰포드 오드 우드)', vibe: '스모키한 나무 향과 이국적인 향신료가 어우러진 묵직한 카리스마' },
+
+    // 기본 폴백 (오류 방지용)
+    'default': { name: 'Jo Malone - Wood Sage & Sea Salt', vibe: '바닷바람처럼 자유롭고 미네랄이 느껴지는 자연스러운 무드' }
+  };
+
+  function mixNote(type, color) {
+    if (mixedNotes.length >= 3) return;
+
+    // 상태 업데이트
+    mixedNotes.push(type);
+    mixedColors.push(color);
+    event.target.classList.add('selected');
+
+    // 오라(Aura) 시각화 업데이트 (색상 혼합 그라데이션)
+    const aura = document.getElementById('scentAura');
+    document.getElementById('auraText').textContent = `${mixedNotes.length} / 3 Notes`;
+    
+    if (mixedColors.length === 1) {
+      aura.style.background = mixedColors[0];
+    } else if (mixedColors.length === 2) {
+      aura.style.background = `linear-gradient(135deg, ${mixedColors[0]}, ${mixedColors[1]})`;
+    } else if (mixedColors.length === 3) {
+      aura.style.background = `linear-gradient(135deg, ${mixedColors[0]}, ${mixedColors[1]}, ${mixedColors[2]})`;
+      showResult();
+    }
+  }
+
+  function showResult() {
+    // 선택되지 않은 버튼 비활성화
+    document.querySelectorAll('.sm-chip:not(.selected)').forEach(chip => chip.classList.add('disabled'));
+
+    // 조합 키(Key) 생성 (알파벳 순 정렬하여 순서 상관없이 매칭되게 함)
+    const mixKey = mixedNotes.sort().join(',');
+    const match = PERFUME_DB[mixKey] || PERFUME_DB['default'];
+
+    // 결과 텍스트 바인딩
+    document.getElementById('resultVibe').innerHTML = `이 조합은 <strong>${match.vibe}</strong>을(를) 연상시킵니다.`;
+    document.getElementById('matchPerfume').textContent = match.name;
+    
+    // 결과창 노출
+    document.getElementById('smResult').style.display = 'block';
+  }
+
+  function resetMixer() {
+    mixedNotes = [];
+    mixedColors = [];
+    
+    document.getElementById('scentAura').style.background = 'var(--surface)';
+    document.getElementById('auraText').textContent = '0 / 3 Notes';
+    document.getElementById('smResult').style.display = 'none';
+    
+    document.querySelectorAll('.sm-chip').forEach(chip => {
+      chip.classList.remove('selected', 'disabled');
+    });
+  }
+</script>
+</body>
+</html>
