@@ -117,6 +117,44 @@
 
     @keyframes cardIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
     .col-card{animation:cardIn .3s ease both;}
+
+    
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav-menu { display: none; }
+      .nav-cta { padding: 0.4rem 1rem; font-size: 0.75rem; }
+      
+      .hero, .page-hero, .sec, .hiw, .families, .picks, .quiz-cta, .result-hero, .perfumes, .other-types, .screen { 
+        padding: 60px 24px !important; 
+      }
+    
+      .hero, .result-hero, .page-hero, .quiz-cta, .sim-wrapper, .families-grid.musky { 
+        grid-template-columns: 1fr !important; 
+        gap: 32px; 
+        text-align: center; 
+      }
+      
+      .families-grid, .picks-grid, .note-grid, .types-grid, .perfumes-grid, .mbti-grid, .trait-grid, .mode-cards, .steps { 
+        grid-template-columns: 1fr !important; 
+      }
+    
+      .hero-title, .ph-title, .rh-title, .intro-title, .mode-title, .qc-title, .sec-title { 
+        font-size: 2.2rem !important; 
+      }
+      
+      .hero-actions, .hero-meta, .rh-actions, .stats-row, .intro-meta { 
+        justify-content: center; 
+        flex-wrap: wrap; 
+      }
+      .sec-kicker, .sec-title, .sec-sub, .rh-tags {
+        justify-content: center;
+        text-align: center;
+      }
+      .sec-sub { margin-left: auto; margin-right: auto; }
+    
+      .footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+    }
+    
   </style>
 </head>
 <body>
