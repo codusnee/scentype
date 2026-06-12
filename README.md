@@ -38,12 +38,14 @@ Scenetype(씬타입)은 복잡한 향수 선택을 성격 유형(MBTI) 기반으
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white"/>
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white"/>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black"/>
-* Frontend: HTML5, CSS3, JavaScript (Vanilla JS)
-* Storage: 브라우저 LocalStorage API
-* Deployment: GitHub Pages
+** Frontend: HTML5, CSS3, JavaScript (Vanilla JS)
+** Storage: 브라우저 LocalStorage API
+** Deployment: GitHub Pages
 
 <br>
 
 ## 👥 Team (2조)
-* 20224106 예술공학부 김채연: [프로젝트 기획, MBTI 추천 로직 및 UI/UX 디자인 구현]
-* 20246060 공공인재학부 노유빈: [MBTI 16가지 유형별 향수 매칭 시나리오 기획 및 향수 매핑 recommend.html 제작, AI 향수 에셋(이미지) 제작, 향수 DB 수집]
+**20224106 예술공학부 김채연** : 
+[프로젝트 기획, MBTI 추천 로직 및 UI/UX 디자인 구현]
+**20246060 공공인재학부 노유빈** : 
+[MBTI 16가지 유형별 향수 매칭 시나리오 기획 및 향수 매핑 recommend.html 제작, AI 향수 에셋(이미지) 제작, 향수 DB 수집]
