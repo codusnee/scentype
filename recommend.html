@@ -119,6 +119,42 @@
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
     .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease;}
     .reveal.visible{opacity:1;transform:translateY(0);}
+
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav-menu { display: none; }
+      .nav-cta { padding: 0.4rem 1rem; font-size: 0.75rem; }
+      
+      .hero, .page-hero, .sec, .hiw, .families, .picks, .quiz-cta, .result-hero, .perfumes, .other-types, .screen { 
+        padding: 60px 24px !important; 
+      }
+    
+      .hero, .result-hero, .page-hero, .quiz-cta, .sim-wrapper, .families-grid.musky { 
+        grid-template-columns: 1fr !important; 
+        gap: 32px; 
+        text-align: center; 
+      }
+      
+      .families-grid, .picks-grid, .note-grid, .types-grid, .perfumes-grid, .mbti-grid, .trait-grid, .mode-cards, .steps { 
+        grid-template-columns: 1fr !important; 
+      }
+      
+      .hero-title, .ph-title, .rh-title, .intro-title, .mode-title, .qc-title, .sec-title { 
+        font-size: 2.2rem !important; 
+      }
+        
+      .hero-actions, .hero-meta, .rh-actions, .stats-row, .intro-meta { 
+        justify-content: center; 
+        flex-wrap: wrap; 
+      }
+      .sec-kicker, .sec-title, .sec-sub, .rh-tags {
+        justify-content: center;
+        text-align: center;
+      }
+      .sec-sub { margin-left: auto; margin-right: auto; }
+    
+      .footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+    }
   </style>
 </head>
 <body>
@@ -492,7 +528,7 @@ function shareResult() {
       url: url
     }).catch((error) => console.log('공유 실패 또는 취소:', error));
   } 
-  // 2. Web Share API를 지원하지 않는 PC 환경 등인 경우 (기존처럼 링크 복사 + 토스트 알림)
+  // 2. Web Share API를 지원하지 않는 PC 환경 등인 경우 (링크 복사 + 토스트 알림)
   else {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(url).then(showToast);
