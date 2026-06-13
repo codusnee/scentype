@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scenetype — 나를 표현하는 향을 찾아보세요</title>
+  <title>Scentype — 나를 표현하는 향을 찾아보세요</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
   <style>
     :root {
@@ -311,49 +311,13 @@
     .reveal-d1 { transition-delay:.1s; }
     .reveal-d2 { transition-delay:.2s; }
     .reveal-d3 { transition-delay:.3s; }
-    
-    @media (max-width: 768px) {
-      .nav { padding: 0 20px; }
-      .nav-menu { display: none; }
-      .nav-cta { padding: 0.4rem 1rem; font-size: 0.75rem; }
-      
-      .hero, .page-hero, .sec, .hiw, .families, .picks, .quiz-cta, .result-hero, .perfumes, .other-types, .screen { 
-        padding: 60px 24px !important; 
-      }
-    
-      .hero, .result-hero, .page-hero, .quiz-cta, .sim-wrapper, .families-grid.musky { 
-        grid-template-columns: 1fr !important; 
-        gap: 32px; 
-        text-align: center; 
-      }
-      
-      .families-grid, .picks-grid, .note-grid, .types-grid, .perfumes-grid, .mbti-grid, .trait-grid, .mode-cards, .steps { 
-        grid-template-columns: 1fr !important; 
-      }
-      
-      .hero-title, .ph-title, .rh-title, .intro-title, .mode-title, .qc-title, .sec-title { 
-        font-size: 2.2rem !important; 
-      }
-        
-      .hero-actions, .hero-meta, .rh-actions, .stats-row, .intro-meta { 
-        justify-content: center; 
-        flex-wrap: wrap; 
-      }
-      .sec-kicker, .sec-title, .sec-sub, .rh-tags {
-        justify-content: center;
-        text-align: center;
-      }
-      .sec-sub { margin-left: auto; margin-right: auto; }
-    
-      .footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
-    }
   </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="nav">
-  <a class="nav-logo" href="index.html">Scene<span>type</span></a>
+  <a class="nav-logo" href="index.html">Scent<span>ype</span></a>
   <ul class="nav-menu">
     <li><a href="#families">향 계열</a></li>
     <li><a href="#picks">추천 향수</a></li>
@@ -372,7 +336,7 @@
       <span class="hl">향을 찾아보세요</span>
     </h1>
     <p class="hero-desc">
-      10가지 질문에 답하면, 당신의 성격 유형에 꼭 맞는 퍼스널 향수를 추천해드립니다. 수천 가지 향 중에서, 진짜 '나'의 향을 발견하세요.
+      12가지 질문에 답하면, 당신의 성격 유형에 꼭 맞는 퍼스널 향수를 추천해드립니다. 수천 가지 향 중에서, 진짜 '나'의 향을 발견하세요.
     </p>
     <div class="hero-actions">
       <button class="btn-hero-main" onclick="location.href='quiz.html'">테스트 시작하기 →</button>
@@ -380,7 +344,7 @@
     </div>
     <div class="hero-meta">
       <div class="hero-meta-item">
-        <span class="hero-meta-num">10</span>
+        <span class="hero-meta-num">12</span>
         <span class="hero-meta-lbl">감성 질문</span>
       </div>
       <div class="hero-meta-item">
@@ -490,7 +454,7 @@
     <div class="step">
       <div class="step-num">1</div>
       <h3 class="step-title">성격 질문에 답하기</h3>
-      <p class="step-desc">일상 속 상황을 묻는 10가지 감성 질문에 답해요. 딱딱한 심리검사가 아닌, 재미있는 시나리오 형식이에요.</p>
+      <p class="step-desc">일상 속 상황을 묻는 12가지 감성 질문에 답해요. 딱딱한 심리검사가 아닌, 재미있는 시나리오 형식이에요.</p>
     </div>
     <div class="step">
       <div class="step-num">2</div>
@@ -706,7 +670,7 @@
   <div>
     <p class="qc-kicker">Personality × Scent</p>
     <h2 class="qc-title">나만의 향,<br>지금 찾아보세요</h2>
-    <p class="qc-desc">MBTI 테스트처럼 간단한 10가지 질문으로 당신의 성향에 딱 맞는 향수를 무료로 추천받아보세요.</p>
+    <p class="qc-desc">MBTI 테스트처럼 간단한 12가지 질문으로 당신의 성향에 딱 맞는 향수를 무료로 추천받아보세요.</p>
     <button class="btn-qc" onclick="location.href='quiz.html'">
       테스트 시작하기
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -714,7 +678,7 @@
   </div>
   <div class="qc-right">
     <div class="qc-item">
-      <span class="qc-item-num">10</span>
+      <span class="qc-item-num">12</span>
       <div>
         <div class="qc-item-title">감성적 질문</div>
         <div class="qc-item-desc">일상 속 상황으로 구성된 재미있는 질문들로 약 3분이면 완료돼요.</div>
@@ -739,13 +703,13 @@
 
 <!-- FOOTER -->
 <footer class="footer">
-  <span class="footer-logo">Scene<span>type</span></span>
+  <span class="footer-logo">Scent<span>ype</span></span>
   <div class="footer-links">
     <a href="quiz.html">Quiz</a>
     <a href="info.html">Info</a>
     <a href="collection.html">Collection</a>
   </div>
-  <span class="footer-copy">© 2026 Scenetype — 프로그래밍 언어의 이해 2조</span>
+  <span class="footer-copy">© 2026 Scentype — 프로그래밍 언어의 이해 2조</span>
 </footer>
 
 <script>
@@ -805,7 +769,8 @@
   // ══════════════════════════════════════
   let mixedNotes = [];
   let mixedColors = [];
-  
+
+  // 조합에 따른 실제 향수 매칭 데이터베이스
   const PERFUME_DB = {
     // 1. 시트러스 + 플로럴 + 머스크
     'citrus,floral,musky': { name: 'Byredo - Blanche (바이레도 블랑쉬)', vibe: '갓 세탁한 셔츠처럼 깨끗하고 포근한 비누향' },
@@ -837,15 +802,19 @@
     // 10. 머스크 + 오리엔탈 + 우디
     'musky,oriental,woody': { name: 'Tom Ford - Oud Wood (톰포드 오드 우드)', vibe: '스모키한 나무 향과 이국적인 향신료가 어우러진 묵직한 카리스마' },
 
-    // (오류 방지용)
+    // 기본 폴백 
     'default': { name: 'Jo Malone - Wood Sage & Sea Salt', vibe: '바닷바람처럼 자유롭고 미네랄이 느껴지는 자연스러운 무드' }
   };
 
   function mixNote(type, color) {
     if (mixedNotes.length >= 3) return;
+
+    // 상태 업데이트
     mixedNotes.push(type);
     mixedColors.push(color);
     event.target.classList.add('selected');
+
+    // 오라(Aura) 시각화 업데이트 (색상 혼합 그라데이션)
     const aura = document.getElementById('scentAura');
     document.getElementById('auraText').textContent = `${mixedNotes.length} / 3 Notes`;
     
@@ -860,13 +829,18 @@
   }
 
   function showResult() {
+    // 선택되지 않은 버튼 비활성화
     document.querySelectorAll('.sm-chip:not(.selected)').forEach(chip => chip.classList.add('disabled'));
 
+    // 조합 키(Key) 생성
     const mixKey = mixedNotes.sort().join(',');
     const match = PERFUME_DB[mixKey] || PERFUME_DB['default'];
-    
+
+    // 결과 텍스트 바인딩
     document.getElementById('resultVibe').innerHTML = `이 조합은 <strong>${match.vibe}</strong>을(를) 연상시킵니다.`;
     document.getElementById('matchPerfume').textContent = match.name;
+    
+    // 결과창 노출
     document.getElementById('smResult').style.display = 'block';
   }
 
