@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Scenetype — 나의 컬렉션</title>
+  <title>Scentype — 나의 컬렉션</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"/>
   <style>
     :root{--bg:#fff;--surface:#f8f8f8;--card:#f2f2f2;--border:#e8e8e8;--text:#1a1a1a;--text2:#444;--muted:#888;--pink:#eb9bb4;--pink-light:#fff5f8;--pink-mid:#ffe4ef;--floral:#e8a0b8;--woody:#c4966a;--citrus:#d4be50;--oriental:#c47040;--musky:#9898b0;}
@@ -117,50 +117,12 @@
 
     @keyframes cardIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
     .col-card{animation:cardIn .3s ease both;}
-
-    
-    @media (max-width: 768px) {
-      .nav { padding: 0 20px; }
-      .nav-menu { display: none; }
-      .nav-cta { padding: 0.4rem 1rem; font-size: 0.75rem; }
-      
-      .hero, .page-hero, .sec, .hiw, .families, .picks, .quiz-cta, .result-hero, .perfumes, .other-types, .screen { 
-        padding: 60px 24px !important; 
-      }
-    
-      .hero, .result-hero, .page-hero, .quiz-cta, .sim-wrapper, .families-grid.musky { 
-        grid-template-columns: 1fr !important; 
-        gap: 32px; 
-        text-align: center; 
-      }
-      
-      .families-grid, .picks-grid, .note-grid, .types-grid, .perfumes-grid, .mbti-grid, .trait-grid, .mode-cards, .steps { 
-        grid-template-columns: 1fr !important; 
-      }
-    
-      .hero-title, .ph-title, .rh-title, .intro-title, .mode-title, .qc-title, .sec-title { 
-        font-size: 2.2rem !important; 
-      }
-      
-      .hero-actions, .hero-meta, .rh-actions, .stats-row, .intro-meta { 
-        justify-content: center; 
-        flex-wrap: wrap; 
-      }
-      .sec-kicker, .sec-title, .sec-sub, .rh-tags {
-        justify-content: center;
-        text-align: center;
-      }
-      .sec-sub { margin-left: auto; margin-right: auto; }
-    
-      .footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
-    }
-    
   </style>
 </head>
 <body>
 
 <nav class="nav">
-  <a class="nav-logo" href="index.html">Scene<span>type</span></a>
+  <a class="nav-logo" href="index.html">Scent<span>ype</span></a>
   <ul class="nav-menu">
     <li><a href="index.html#families">향 계열</a></li>
     <li><a href="index.html#picks">추천 향수</a></li>
@@ -259,13 +221,13 @@
 <div class="toast" id="toast"></div>
 
 <footer class="footer">
-  <span class="footer-logo">Scene<span>type</span></span>
+  <span class="footer-logo">Scent<span>ype</span></span>
   <div class="footer-links"><a href="quiz.html">Quiz</a><a href="info.html">Info</a><a href="collection.html">Collection</a></div>
-  <span class="footer-copy">© 2026 Scenetype — 프로그래밍 언어의 이해 2조</span>
+  <span class="footer-copy">© 2026 Scentype — 프로그래밍 언어의 이해 2조</span>
 </footer>
 
 <script>
-const STORAGE_KEY='scenetype_collection';
+const STORAGE_KEY='Scentype_collection';
 const TYPE_META={floral:{label:'플로럴',color:'#e8a0b8',dot:'linear-gradient(135deg,#f4b8d0,#e890b0)'},woody:{label:'우디',color:'#c4966a',dot:'linear-gradient(135deg,#d4a870,#b88040)'},citrus:{label:'시트러스',color:'#d4be50',dot:'linear-gradient(135deg,#f0d860,#d4b830)'},oriental:{label:'오리엔탈',color:'#c47040',dot:'linear-gradient(135deg,#d49070,#b06030)'},musky:{label:'머스크',color:'#9898b0',dot:'linear-gradient(135deg,#b0b0c8,#8888a8)'}};
 let collection=[],currentFilter='all',editingId=null,selectedStar=0;
 
@@ -356,3 +318,4 @@ if(params.get('add')==='1'){const name=params.get('name')||'',brand=params.get('
 </script>
 </body>
 </html>
+
