@@ -171,6 +171,50 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
     .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
     .reveal.visible{opacity:1;transform:translateY(0);}
+
+    @media (max-width: 768px) {
+    .nav { padding: 0 20px; }
+    .nav-menu { display: none; }
+  
+    .hero, .page-hero, .result-hero, .quiz-cta, .sec, .hiw, .families, .picks, .other-types, .perfumes, .main-area, .traits-section, .season-section { 
+      padding: 60px 24px !important; 
+    }
+    
+    .hero, .result-hero, .quiz-cta, .sim-wrapper, .sm-container, .fam-panel.musky { 
+      grid-template-columns: 1fr !important; 
+      flex-direction: column !important;
+      text-align: center !important; 
+      gap: 32px;
+    }
+    
+    .families-grid, .picks-grid, .steps, .note-grid, .types-grid, .perfumes-grid, .trait-grid, .collection-grid, .hero-card-row { 
+      grid-template-columns: 1fr !important; 
+      gap: 16px !important;
+    }
+    
+    .hero-title, .ph-title, .rh-title, .sec-title, .qc-title, .intro-title { 
+      font-size: 2.2rem !important; 
+      text-align: center;
+    }
+    
+    .hero-actions, .hero-meta, .rh-actions, .rh-tags, .stats-row, .intro-meta, .sm-actions { 
+      justify-content: center !important; 
+      flex-wrap: wrap; 
+    }
+    .families-head, .picks-head, .perfumes-head { 
+      flex-direction: column; 
+      align-items: center; 
+      text-align: center; 
+      gap: 16px;
+    }
+    .sec-sub { margin: 0 auto 32px auto !important; text-align: center; }
+    
+    .footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+    
+    .conc-table th, .conc-table td { padding: 12px 8px; font-size: 0.75rem; }
+    .conc-bar-row { display: none; } 
+  }
+
   </style>
 </head>
 <body>
@@ -385,3 +429,4 @@ document.querySelectorAll('.sim-hotspot').forEach(spot => {
 </script>
 </body>
 </html>
+
